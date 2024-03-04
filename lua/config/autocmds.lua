@@ -11,7 +11,6 @@ if vim.fn.has('wsl') then
   augroup END
   ]]
 end
-
 -- 注释不带到下一行
 vim.api.nvim_create_autocmd({ "BufEnter" }, {
   pattern = "*",

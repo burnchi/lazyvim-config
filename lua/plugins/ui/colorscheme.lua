@@ -8,11 +8,12 @@ return {
       -- 全黑
       color_overrides = {
         mocha = {
-          base = "#000000",
-          mantle = "#000000",
-          crust = "#000000",
+          base = "#0a0a0a",
+          mantle = "#0a0a0a",
+          crust = "#0a0a0a",
         },
       },
+      no_italic = true,   -- Force no italic
       -- which plugin use colorscheme
       integrations = {
         aerial = true,
