@@ -1,40 +1,54 @@
 return {
   'nvimdev/lspsaga.nvim',
-  cmd = "Lspsaga",
-  config = function()
-    local keymap = vim.keymap
+  keys = {
+    {
+      '[d',
+      ':Lspsaga diagnostic_jump_prev<CR>',
+      {
 
-    require('lspsaga').setup {
-      ui = {
-        border = 'rounded',
-      },
-      lightbulb = {
-        enable = false,
-      },
-    }
-
-    keymap.set('n', '[d', '<cmd>Lspsaga diagnostic_jump_prev<cr>')
-    keymap.set('n', ']d', '<cmd>Lspsaga diagnostic_jump_next<cr>')
-    -- watch all symbal
-    keymap.set('n', '<leader>o', '<cmd>Lspsaga outline<cr>')
-
-    vim.keymap.set('n', 'gd', '<cmd>Lspsaga goto_definition<cr>')
-    vim.keymap.set('n', '<space>r', vim.lsp.buf.rename)
-    vim.keymap.set(
-      { 'n', 'v' },
-      '<space>ca',
-      '<cmd>Lspsaga code_action<cr>',
-      opts
-    )
-    vim.keymap.set('n', 'gd', '<cmd>Lspsaga goto_definition<cr>')
-
-
-    vim.keymap.set(
-      'n',
-      '<space>k',
+        silent = true,
+        desc = 'diagnostic_jump_prev'
+      }
+    },
+    {
+      ']d',
+      ':Lspsaga diagnostic_jump_next<CR>',
+      {
+        silent = true,
+        desc = 'diagnostic_jump_next'
+      }
+    },
+    -- {
+    --   'gd',
+    --   '<cmd>Lspsaga goto_definition<cr>',
+    --   desc = 'goto_definition'
+    -- },
+    -- {
+    --   '<leader>o',
+    --   '<cmd>Lspsaga outline<cr>',
+    --   desc = 'symbol outline'
+    -- },
+    {
+      '<leader>r',
+      ':Lspsaga rename<cr>',
+      desc = 'Global Rename'
+    },
+    -- {
+    --   '<leader>ca',
+    --   '<cmd>Lspsaga code_action<cr>',
+    --   desc = 'Code Action'
+    -- },
+    {
+      'K',
       '<cmd>Lspsaga hover_doc<cr>',
-      { silent = true }
-    )
+      desc = 'show Doc'
+    },
+  },
+  config = function()
+    -- local keymap = vim.keymap
+    -- local builtin = require 'telescope.builtin'
+
+    require('lspsaga').setup({})
 
     -- error lens
     vim.fn.sign_define {

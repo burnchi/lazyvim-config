@@ -1,3 +1,6 @@
+-- dont use this theme
+if true then return {} end
+
 return {
   {
     "catppuccin/nvim",
@@ -5,15 +8,15 @@ return {
     name = "catppuccin",
     priority = 1000,
     opts = {
-      -- 全黑
+      -- 背景颜色
       color_overrides = {
         mocha = {
-          base = "#0a0a0a",
-          mantle = "#0a0a0a",
-          crust = "#0a0a0a",
+          base = "#000000",
+          mantle = "#000000",
+          crust = "#000000",
         },
       },
-      no_italic = true,   -- Force no italic
+      no_italic = true, -- Force no italic
       -- which plugin use colorscheme
       integrations = {
         aerial = true,
@@ -52,10 +55,4 @@ return {
       },
     },
   },
-  {
-    "LazyVim/LazyVim",
-    opts = {
-      colorscheme = "catppuccin",
-    },
-  }
 }

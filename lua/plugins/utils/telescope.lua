@@ -11,5 +11,21 @@ return {
       "<cmd>Telescope find_files<cr>",
       desc = "Find File",
     },
+    {
+      "<leader>so",
+      false,
+      mode = { "n" }
+    },
+    {
+      "<leader>ss",
+      false,
+      mode = { "n" }
+    },
+    {
+      "<leader>sS",
+      false,
+      mode = { "n" }
+    },
+
   },
 }
