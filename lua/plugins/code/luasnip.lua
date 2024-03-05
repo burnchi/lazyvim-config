@@ -2,70 +2,62 @@ return {
   {
     "L3MON4D3/LuaSnip",
     config = function()
-      require("luasnip").config.set_config({
-        enable_autosnippets = true,
-        store_selection_keys = "`",
-      })
+      local ls = require("luasnip") --{{{
+
+      -- require("luasnip.loaders.from_vscode").lazy_load()
       require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/LuaSnip" })
-      local auto_expand = require("luasnip").expand_auto
-      require("luasnip").expand_auto = function(...)
-        vim.o.undolevels = vim.o.undolevels
-        auto_expand(...)
-      end
-    end,
-    -- 覆盖原本的keymap
-    keys = function()
-      return {
-        -- jump to next slug (insert mode)
-        {
-          "<A-j>",
-          function()
-            return require("luasnip").expand_or_locally_jumpable() and "<Plug>luasnip-jump-next"
-          end,
-          expr = true,
-          silent = true,
-          mode = "i",
+      require("luasnip").config.setup({ store_selection_keys = "<A-p>" })
+
+      vim.cmd([[command! LuaSnipEdit :lua require("luasnip.loaders.from_lua").edit_snippet_files()]]) --}}}
+
+      -- Virtual Text{{{
+      local types = require("luasnip.util.types")
+      ls.config.set_config({
+        history = true,                            --keep around last snippet local to jump back
+        updateevents = "TextChanged,TextChangedI", --update changes as you type
+        enable_autosnippets = true,
+        ext_opts = {
+          -- choiceNode will appear a hint
+          [types.choiceNode] = {
+            active = { virt_text = { { "●", "Orange" } }, hl_mode = "combine" }
+          },
+          -- [types.insertNode] = {
+          -- 	active = {
+          -- 		virt_text = { { "●", "GruvboxBlue" } },
+          -- 	},
+          -- },
         },
-        -- jump to next slug (select mode)
-        {
-          "<A-j>",
-          function()
-            return require("luasnip").jump(1)
-          end,
-          mode = "s",
-        },
-        -- jump to last slug
-        {
-          "<A-k>",
-          function()
-            require("luasnip").jump(-1)
-          end,
-          mode = { "i", "s" },
-        },
-        -- select_node select next word
-        {
-          "<c-h>",
-          "<Plug>luasnip-next-choice",
-          mode = { "i", "s" },
-        },
-        -- select_node select last word
-        {
-          "<c-p>",
-          "<Plug>luasnip-prev-choice",
-          mode = { "i", "s" },
-        },
-        -- {
-        --   "<tab>",
-        --   function()
-        --     if require("luasnip").expand_or_jumpable() then
-        --       require("luasnip").expand_or_jump()
-        --     else
-        --       return "<tab>"
-        --     end
-        --   end,
-        --   mode = { "i", "s" },
-        -- },
-      }
+      })
+      vim.keymap.set({ "i", "s" }, "<a-j>", function()
+        if ls.jumpable(1) then
+          ls.jump(1)
+        end
+      end, { silent = true })
+      vim.keymap.set({ "i", "s" }, "<a-k>", function()
+        if ls.jumpable(-1) then
+          ls.jump(-1)
+        end
+      end, { silent = true })
+      vim.keymap.set({ "i", "s" }, "<a-l>", function()
+        if ls.choice_active() then
+          ls.change_choice(1)
+        else
+          -- print current time
+          local t = os.date("*t")
+          local time = string.format("%02d:%02d:%02d", t.hour, t.min, t.sec)
+          print(time)
+        end
+      end)
+      vim.keymap.set({ "i", "s" }, "<a-h>", function()
+        if ls.choice_active() then
+          ls.change_choice(-1)
+        end
+      end) --}}}
+
+      -- More Settings --
+
+      vim.keymap.set("n", "<Leader><CR>", "<cmd>LuaSnipEdit<cr>", { silent = true, noremap = true })
+      vim.cmd([[autocmd BufEnter */snippets/*.lua nnoremap <silent> <buffer> <CR> /-- End Refactoring --<CR>O<Esc>O]])
     end,
   },
 }

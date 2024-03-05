@@ -1,5 +1,32 @@
 ---@diagnostic disable: missing-fields
 -- 代码补全 和 括号补齐
+local kind_icons = {
+  Text = "",
+  Method = "m",
+  Function = "",
+  Constructor = "",
+  Field = "",
+  Variable = "",
+  Class = "",
+  Interface = "",
+  Module = "",
+  Property = "",
+  Unit = "",
+  Value = "",
+  Enum = "",
+  Keyword = "",
+  Snippet = "",
+  Color = "",
+  File = "",
+  Reference = "",
+  Folder = "",
+  EnumMember = "",
+  Constant = "",
+  Struct = "",
+  Event = "",
+  Operator = "",
+  TypeParameter = "",
+}
 
 return {
   {
@@ -76,17 +103,28 @@ return {
         }),
         -- Enable pictogram icons for lsp/autocompletion
         formatting = {
-          expandable_indicator = true,
-          format = lspkind.cmp_format({
-            mode = "symbol_text",
-            maxwidth = 50,
-            ellipsis_char = "...",
-            symbol_map = {
-              Copilot = "",
-            },
-          }),
+          fields = { "kind", "abbr", "menu" },
+          format = function(entry, vim_item)
+            -- Kind icons
+            vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
+            -- vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
+            vim_item.menu = ({
+              -- copilot = "[Copilot]",
+              luasnip = "LuaSnip",
+              nvim_lua = "[NVim Lua]",
+              nvim_lsp = "[LSP]",
+              buffer = "[Buffer]",
+              path = "[Path]",
+            })[entry.source.name]
+            return vim_item
+          end,
+        },
+        confirm_opts = {
+          behavior = cmp.ConfirmBehavior.Replace,
+          select = false,
         },
         experimental = {
+
           ghost_text = true,
         },
       })

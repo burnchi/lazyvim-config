@@ -11,121 +11,131 @@ local sn = ls.snippet_node
 local fmt = require("luasnip.extras.fmt").fmt
 local rep = require("luasnip.extras").rep
 
-local snippets, autosnippets = {}, {} --}}}
+local file_pattern = "typescriptreact"
+-- 箭头函数1  可以修改分割符号,自动补全
+ls.add_snippets(file_pattern, {
 
-local group = vim.api.nvim_create_augroup("Javascript Snippets", { clear = true })
-local file_pattern = "*.js"
-
-local function cs(trigger, nodes, opts) --{{{
-  local snippet = s(trigger, nodes)
-  local target_table = snippets
-
-  local pattern = file_pattern
-  local keymaps = {}
-
-  if opts ~= nil then
-    -- check for custom pattern
-    if opts.pattern then
-      pattern = opts.pattern
-    end
-
-    -- if opts is a string
-    if type(opts) == "string" then
-      if opts == "auto" then
-        target_table = autosnippets
-      else
-        table.insert(keymaps, { "i", opts })
-      end
-    end
-
-    -- if opts is a table
-    if opts ~= nil and type(opts) == "table" then
-      for _, keymap in ipairs(opts) do
-        if type(keymap) == "string" then
-          table.insert(keymaps, { "i", keymap })
-        else
-          table.insert(keymaps, keymap)
-        end
-      end
-    end
-
-    -- set autocmd for each keymap
-    if opts ~= "auto" then
-      for _, keymap in ipairs(keymaps) do
-        vim.api.nvim_create_autocmd("BufEnter", {
-          pattern = pattern,
-          group = group,
-          callback = function()
-            vim.keymap.set(keymap[1], keymap[2], function()
-              ls.snip_expand(snippet)
-            end, { noremap = true, silent = true, buffer = true })
-          end,
-        })
-      end
-    end
-  end
-
-  table.insert(target_table, snippet) -- insert snippet into appropriate table
-end
--- 箭头函数1  可以修改分割符号
-cs(
-  "cafe",
-  fmt(
-    [[
-      const [] = ([]) => {
-         []
-      }
-  ]],
+  s(
     {
-      -- i(1) is at nodes[1], i(2) at nodes[2].
-      i(1, ""),
-      i(2, ""),
-      i(3, ""),
+      trig = "cafe",
+      desc = "entire arrow function",
     },
+    fmt(
+      [[
+      const {} = ({}) => {{
+         {}
+      }}
+  ]],
+      {
+        -- i(1) is at nodes[1], i(2) at nodes[2].
+        i(1, ""),
+        i(2, ""),
+        i(3, ""),
+      }
+    )
+  ),
+  -- 导出的箭头函数
+  s(
     {
-      delimiters = "[]",
-    }
-  )
-)
--- 箭头函数2
-cs(
-  "af",
-  fmt(
-    [[
+      trig = "ecafe",
+      desc = "export arrow function"
+    },
+    fmt(
+      [[
+      const {} = ({}) => {{
+         {}
+      }}
+      export default {}
+  ]],
+      {
+        -- func name always same as export name
+        d(1, function()
+          return sn(1, i(1, ""))
+        end),
+        i(2, ""),
+        i(3, ""),
+        rep(1)
+      }
+    )
+  ),
+  -- 半箭头函数
+  s(
+    {
+      trig = "af",
+      desc = "half arrow function"
+
+    },
+    fmt(
+      [[
     ({}) => {}
   ]],
+      {
+        -- choice_node
+        c(1, { t(""), t("item"), t("item,idx") }),
+        i(2, ""),
+      }
+    )
+  ),
+  -- 匿名函数
+  s(
     {
-      i(1, ""),
-      i(2, ""),
-    }
-  )
-)
--- 组件类型定义
-cs(
-  "interComp",
-  fmt(
-    [[
+      trig = "afr",
+      desc = "anno arrow function"
+
+    },
+    fmt(
+      [[
+    ({}) => {{
+      {}
+
+      return ({})
+    }}
+  ]],
+      {
+        -- choice_node
+        c(1, { t(""), t("item"), t("item,idx") }),
+        i(2, "Todo1"),
+        i(3, "Todo2"),
+      }
+    )
+  ),
+  -- 组件类型定义
+  s(
+    {
+      trig = "interComp",
+      desc = "type save Interface"
+
+    },
+    fmt(
+      [[
 interface {}{{
-  children: React.ReactNode;
-  className?: string;
+  {}
 }}
   ]],
+      {
+        i(1, ""),
+        c(2, {
+          t(""),
+          -- 自定义组件类型
+          sn(1, { t({ "children: React.ReactNode;", "  className?: string;" }), i(1, "") })
+        })
+      }
+    )
+  ),
+  -- twmerge样式合并
+  s(
     {
-      i(1, ""),
-    }
-  )
-)
--- twmerge样式合并
-cs(
-  "twmerge",
-  fmt(
-    [[
+      trig = "twmerge",
+      desc = "Quick Use twMerge"
+
+    },
+    fmt(
+      [[
     twMerge("{}", className)
   ]],
-    {
-      i(1, ""),
-    }
+      {
+        i(1, ""),
+      }
+    )
   )
-)
-
-return snippets, autosnippets
+})
