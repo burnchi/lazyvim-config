@@ -24,7 +24,8 @@ keymap.del('n', "K")
 -- ban command popup
 function opts()
   return {
-    silent = true
+    silent = true,
+    noremap = true
   }
 end
 
@@ -38,19 +39,31 @@ keymap.set("v", "<s-l>", "$")
 
 -- ---------- 正常模式 ---------- ---
 -- 窗口
-keymap.set("n", "<leader>ss", "<C-w>v", { desc = "verticle split window" }) -- 新增水平窗口
-keymap.set("n", "<leader>sv", "<C-w>s", { desc = "horizon split window" })  -- 新增垂直窗口
-keymap.set("n", "<C-a>", "GVgg")                                            -- select all
+-- 新增水平窗口
+keymap.set("n", "<leader>ss", "<C-w>v", { desc = "verticle split window" })
+-- 新增垂直窗口
+keymap.set("n", "<leader>sv", "<C-w>s", { desc = "horizon split window" })
+-- select all
+keymap.set("n", "<C-a>", "GVgg")
 -- quick move cursor
 keymap.set("n", "H", "^")
 keymap.set("n", "L", "$")
 keymap.set("n", "dH", "d^")
 keymap.set("n", "dL", "d$")
-keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "cancel highlight", silent = true }) -- no highlight
-keymap.set("n", "<leader>wd", "<C-w>c", { desc = "close window" })                       -- close window
+-- no highlight
+keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "cancel highlight", silent = true })
+-- close window
+keymap.set("n", "<leader>wd", "<C-w>c", { desc = "close window" })
+-- search something
+keymap.set('n', "<c-f>", "/", opts())
+
 
 -- ---------- 选择模式 ---------- ---
-keymap.set("s", "<C-s>", "<ESC>:w<CR>", opts()) -- save file
+
+
+-- ---------- 命令模式 ---------- ---
+-- stop search something
+keymap.set('c', 'jk', '<c-c>', opts())
 
 
 
