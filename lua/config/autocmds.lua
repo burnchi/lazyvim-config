@@ -11,6 +11,7 @@ if vim.fn.has('wsl') then
   augroup END
   ]]
 end
+
 -- 注释不带到下一行
 vim.api.nvim_create_autocmd({ "BufEnter" }, {
   pattern = "*",
@@ -18,7 +19,6 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
     vim.opt.formatoptions = vim.opt.formatoptions - { "c", "r", "o" }
   end,
 })
-
 
 -- yank style
 vim.api.nvim_create_autocmd("TextYankPost", {
@@ -29,3 +29,31 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     vim.highlight.on_yank({ timeout = 300, visual = true })
   end,
 })
+
+-- error lens
+vim.fn.sign_define {
+  {
+    name = 'DiagnosticSignError',
+    text = '',
+    texthl = 'DiagnosticSignError',
+    linehl = 'ErrorLine',
+  },
+  {
+    name = 'DiagnosticSignWarn',
+    text = '',
+    texthl = 'DiagnosticSignWarn',
+    linehl = 'WarningLine',
+  },
+  {
+    name = 'DiagnosticSignInfo',
+    text = '',
+    texthl = 'DiagnosticSignInfo',
+    linehl = 'InfoLine',
+  },
+  {
+    name = 'DiagnosticSignHint',
+    text = '',
+    texthl = 'DiagnosticSignHint',
+    linehl = 'HintLine',
+  },
+}

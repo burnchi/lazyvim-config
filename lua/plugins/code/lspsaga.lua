@@ -1,9 +1,30 @@
+-- vim.api.nvim_create_autocmd('LspAttach', {
+--   group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+--   callback = function(ev)
+--     -- Enable completion triggered by <c-x><c-o>
+--     vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+--
+--     local opts = { buffer = ev.buf }
+--     vim.keymap.set('n', 'gd', '<cmd>Lspsaga goto_definition<cr>', opts)
+--     vim.keymap.set(
+--       { 'n', 'v' },
+--       '<space>cs',
+--       '<cmd>Lspsaga code_action<cr>',
+--       opts
+--     )
+--   end,
+-- })
+
 return {
   'nvimdev/lspsaga.nvim',
+  event = { "LspAttach" },
+  dependencies = {
+    "nvim-treesitter/nvim-treesitter",
+  },
   keys = {
     {
       '[d',
-      ':Lspsaga diagnostic_jump_prev<CR>',
+      '<cmd>Lspsaga diagnostic_jump_prev<CR>',
       {
 
         silent = true,
@@ -12,17 +33,28 @@ return {
     },
     {
       ']d',
-      ':Lspsaga diagnostic_jump_next<CR>',
+      '<cmd>Lspsaga diagnostic_jump_next<CR>',
       {
         silent = true,
         desc = 'diagnostic_jump_next'
       }
     },
-    -- {
-    --   'gd',
-    --   '<cmd>Lspsaga goto_definition<cr>',
-    --   desc = 'goto_definition'
-    -- },
+    {
+      '<leader>pd',
+      '<cmd>Lspsaga peek_definition<CR>',
+      {
+        silent = true,
+        desc = 'peek definition'
+      }
+    },
+    {
+      '<leader>pt',
+      '<cmd>Lspsaga peek_type_definition<CR>',
+      {
+        silent = true,
+        desc = 'peek type_definition'
+      }
+    },
     -- {
     --   '<leader>o',
     --   '<cmd>Lspsaga outline<cr>',
@@ -30,12 +62,14 @@ return {
     -- },
     {
       '<leader>r',
-      ':Lspsaga rename<cr>',
+      '<cmd>Lspsaga rename<cr>',
       desc = 'Global Rename'
     },
     -- {
     --   '<leader>ca',
-    --   '<cmd>Lspsaga code_action<cr>',
+    --   function()
+    --     require("lspsaga.codeaction").code_action({ context = { only = "source" } })
+    --   end,
     --   desc = 'Code Action'
     -- },
     {
@@ -44,38 +78,19 @@ return {
       desc = 'show Doc'
     },
   },
-  config = function()
-    -- local keymap = vim.keymap
-    -- local builtin = require 'telescope.builtin'
+  -- config = function()
+  -- local keymap = vim.keymap
+  -- require('lspsaga').setup({
+  opts = {
+    ui = {
+      border = 'rounded',
+    },
+    lightbulb = {
+      enable = false,
+    },
 
-    require('lspsaga').setup({})
+  }
+  -- })
 
-    -- error lens
-    vim.fn.sign_define {
-      {
-        name = 'DiagnosticSignError',
-        text = '',
-        texthl = 'DiagnosticSignError',
-        linehl = 'ErrorLine',
-      },
-      {
-        name = 'DiagnosticSignWarn',
-        text = '',
-        texthl = 'DiagnosticSignWarn',
-        linehl = 'WarningLine',
-      },
-      {
-        name = 'DiagnosticSignInfo',
-        text = '',
-        texthl = 'DiagnosticSignInfo',
-        linehl = 'InfoLine',
-      },
-      {
-        name = 'DiagnosticSignHint',
-        text = '',
-        texthl = 'DiagnosticSignHint',
-        linehl = 'HintLine',
-      },
-    }
-  end,
+  -- end,
 }

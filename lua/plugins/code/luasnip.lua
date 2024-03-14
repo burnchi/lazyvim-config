@@ -42,22 +42,20 @@ return {
         if ls.choice_active() then
           ls.change_choice(1)
         else
-          -- print current time
-          local t = os.date("*t")
-          local time = string.format("%02d:%02d:%02d", t.hour, t.min, t.sec)
-          print(time)
+          local keys = vim.api.nvim_replace_termcodes('<ESC>l', true, false, true)
+          vim.api.nvim_feedkeys(keys, 'm', false)
+          -- vim.cmd.stopinsert()
         end
       end)
       vim.keymap.set({ "i", "s" }, "<a-h>", function()
         if ls.choice_active() then
           ls.change_choice(-1)
+        else
+          local keys = vim.api.nvim_replace_termcodes('<ESC>h', true, false, true)
+          vim.api.nvim_feedkeys(keys, 'm', false)
+          -- vim.cmd.stopinsert()
         end
-      end) --}}}
-
-      -- More Settings --
-
-      vim.keymap.set("n", "<Leader><CR>", "<cmd>LuaSnipEdit<cr>", { silent = true, noremap = true })
-      vim.cmd([[autocmd BufEnter */snippets/*.lua nnoremap <silent> <buffer> <CR> /-- End Refactoring --<CR>O<Esc>O]])
+      end)
     end,
   },
 }

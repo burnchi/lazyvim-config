@@ -38,7 +38,7 @@ ls.add_snippets(file_pattern, {
   s(
     {
       trig = "ecafe",
-      desc = "export arrow function"
+      desc = "export default arrow function"
     },
     fmt(
       [[
@@ -137,5 +137,14 @@ interface {}{{
         i(1, ""),
       }
     )
+  ),
+  -- 合并空尖括号
+  s(
+    "<>",
+    {
+      t("<>"),
+      i(1, ""),
+      t("</>")
+    }
   )
 })

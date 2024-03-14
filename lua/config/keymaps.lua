@@ -31,6 +31,8 @@ end
 
 -- ---------- 插入模式 ---------- ---
 keymap.set("i", "jk", "<ESC>")
+-- keymap.set("i", "<a-l>", "<ESC>l", opts())
+-- keymap.set("i", "<a-h>", "<ESC>h", opts())
 keymap.set("i", "<C-s>", "<ESC>:w<CR>", opts())
 
 -- ---------- 视觉模式 ---------- ---
@@ -57,12 +59,20 @@ keymap.set("n", "<leader>wd", "<C-w>c", { desc = "close window" })
 -- search something
 keymap.set('n', "<c-f>", "/", opts())
 
+-- print current time
+keymap.set('n', '<leader>t', function()
+  -- print current time
+  local t = os.date("*t")
+  local time = string.format("%02d:%02d:%02d", t.hour, t.min, t.sec)
+  print(time)
+end, { desc = "Print Current Time", silent = true })
+
 
 -- ---------- 选择模式 ---------- ---
 
 
 -- ---------- 命令模式 ---------- ---
--- stop search something
+-- stop search something or command line
 keymap.set('c', 'jk', '<c-c>', opts())
 
 

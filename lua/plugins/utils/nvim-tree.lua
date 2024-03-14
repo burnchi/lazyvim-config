@@ -9,7 +9,7 @@ return {
     {
       "<leader>e",
       "<cmd>NvimTreeToggle<CR>",
-      desc = "toggle file tree"
+      desc = "toggle NvimTree"
     },
   },
   config = function()

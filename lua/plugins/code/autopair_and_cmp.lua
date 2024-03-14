@@ -68,6 +68,7 @@ return {
           documentation = cmp.config.window.bordered(),
         },
         mapping = cmp.mapping.preset.insert({
+
           ["<C-k>"] = cmp.mapping.select_prev_item(), -- previous suggestion
           ["<C-j>"] = cmp.mapping.select_next_item(), -- next suggestion
           ["<Tab>"] = cmp.mapping(function(fallback)
@@ -119,6 +120,7 @@ return {
             return vim_item
           end,
         },
+        -- format
         confirm_opts = {
           behavior = cmp.ConfirmBehavior.Replace,
           select = false,

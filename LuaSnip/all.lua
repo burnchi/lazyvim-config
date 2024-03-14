@@ -12,7 +12,7 @@ local sn = ls.snippet_node
 
 local file_pattern = "all"
 ls.add_snippets(file_pattern, {
-  s("demoall", {
-    t("hello all!")
+  s("log", {
+    t("console.log("), i(1), t(")")
   })
 })

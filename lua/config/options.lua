@@ -6,7 +6,7 @@ local opt = vim.opt
 -- debug column
 opt.signcolumn = 'no'
 
-
+-- cursor blinking
 vim.opt.guicursor = {
   "n-v-c:block",                                  -- Normal, visual, command-line: block cursor
   "i-ci-ve:ver25",                                -- Insert, command-line insert, visual-exclude: vertical bar cursor with 25% width

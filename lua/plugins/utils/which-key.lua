@@ -5,7 +5,10 @@ return {
     -- plugins = { spelling = true },
     defaults = {
       mode = { "n", "v" },
-      -- ["g"] = { name = "+goto" },
+      -- add category in left-bottom corner
+      ["<leader>p"] = { name = "+peek" },
+      ["<leader>h"] = { name = "+add_tags" },
+      ["<leader>n"] = { name = "+no" },
       -- ["gs"] = { name = "+surround" },
       -- ["]"] = { name = "+next" },
       -- ["["] = { name = "+prev" },
@@ -20,7 +23,6 @@ return {
       -- ["<leader>u"] = { name = "+ui" },
       -- ["<leader>w"] = { name = "+windows" },
       -- ["<leader>x"] = { name = "+diagnostics/quickfix" },
-      ["<leader>e"] = { name = "+file-tree" }
 
 
 
